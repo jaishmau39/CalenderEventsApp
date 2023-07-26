@@ -1,5 +1,6 @@
 from model import CalendarModel
 from dto import EventDTO
+from datetime import datetime
 
 class CalendarService:
     def __init__(self):
@@ -16,6 +17,7 @@ class CalendarService:
             # Raise error if title, date or time is missing 
             raise ValueError("Missing required fields (title, date, or time)")
         return self.model.create_event(event_dto)
+
 
     def update_event(self, event_id, event_dto: EventDTO):
         

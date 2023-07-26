@@ -80,6 +80,8 @@ class CalendarModel:
         conn.commit()
         conn.close()
 
+
+
     def get_events(self):
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()

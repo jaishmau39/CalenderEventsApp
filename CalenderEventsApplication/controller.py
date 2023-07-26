@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from service import CalendarService
 from dto import EventDTO
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 service = CalendarService()
 
 # Get all calender events
@@ -41,6 +43,8 @@ def create_event():
         return jsonify({"error": "Internal Server Error"}), 500
 
     return jsonify({"message": "Event created successfully"})
+
+
 
 # Update an event using event Id
 @app.route('/events/<event_id>', methods=['PUT'])
