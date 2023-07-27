@@ -81,7 +81,7 @@ export default {
       const eventToUpdate = {
         title: info.event.title,
         // Extract YYYY-MM-DD from ISO string
-        date: info.event.start.toISOString().substry(0, 10), 
+        date: info.event.start.toISOString().substr(0, 10), 
         // Extract HH:mm from ISO string
         time: info.event.start.toISOString().substr(11, 5), 
       };
