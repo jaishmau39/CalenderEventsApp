@@ -35,6 +35,16 @@ class CalendarService:
 
         self.model.update_event(event_id, event_dto)
 
+    def delete_event_by_id(self, event_id):
+        # convert the event Id to an integer
+        event_id = int(event_id) 
+        
+        # Check if th given ID exists in events table
+        if not self.model.get_event_by_id(event_id):
+            raise ValueError("Event with ID {} does not exist.".format(event_id))
+
+        self.model.delete_event(event_id)
+
 
     def get_events(self):
         return self.model.get_events()

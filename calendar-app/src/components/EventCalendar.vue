@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     this.fetchEvents();
+    this.calendarOptions.eventClick = this.onEventClick;
   },
   methods: {
     async fetchEvents() {
@@ -63,6 +64,8 @@ export default {
           // Event created successfully, update the calendar
           await this.fetchEvents();
           this.resetForm();
+           // Display event creation success message
+        window.alert('Event successfully created!');
         } else {
           console.error('Failed to create event.');
         }
@@ -77,8 +80,10 @@ export default {
       console.log('Event ID:', eventId);
       const eventToUpdate = {
         title: info.event.title,
-        date: info.event.start.toISOString().substr(0, 10), // Extract YYYY-MM-DD from ISO string
-        time: info.event.start.toISOString().substr(11, 5), // Extract HH:mm from ISO string
+        // Extract YYYY-MM-DD from ISO string
+        date: info.event.start.toISOString().substry(0, 10), 
+        // Extract HH:mm from ISO string
+        time: info.event.start.toISOString().substr(11, 5), 
       };
 
       const response = await fetch(`http://localhost:5000/events/${eventId}`, {
@@ -97,6 +102,32 @@ export default {
       }
     } catch (error) {
       console.error('Error updating event:', error);
+    }
+  },
+  
+    onEventClick(eventClickInfo) {
+    const eventId = eventClickInfo.event.id;
+
+    // Show confirmation popup
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      this.deleteEvent(eventId);
+    }
+  },
+
+  async deleteEvent(eventId) {
+    try {
+      const response = await fetch(`http://localhost:5000/events/${eventId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Event deleted successfully, update the calendar
+        await this.fetchEvents();
+      } else {
+        console.error('Failed to delete event.');
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
     }
   },
     resetForm() {
@@ -174,22 +205,18 @@ h3 {
   margin-bottom: 20px;
 }
 
-/* Apply Bootstrap styles to the form in the sidebar */
+
 .form-container {
-  /* Add any Bootstrap styles here */
 }
 
-/* Adjust spacing for the form fields */
 .form-group {
   margin-bottom: 15px;
 }
 
-/* Override Bootstrap's default styling for the form inputs */
+
 .form-control {
-  /* Add any custom styles for the form inputs */
 }
 
-/* Remove default margins for the body element */
 body {
   margin: 0;
   padding: 0;

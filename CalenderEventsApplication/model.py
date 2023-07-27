@@ -80,6 +80,16 @@ class CalendarModel:
         conn.commit()
         conn.close()
 
+    def delete_event(self, event_id):
+        conn = sqlite3.connect(self.db_name)
+        cursor = conn.cursor()
+
+        # Delete the event from the events table by the event Id
+        cursor.execute('DELETE FROM events WHERE id=?', (event_id,))
+
+        conn.commit()
+        conn.close()
+
 
 
     def get_events(self):

@@ -68,6 +68,20 @@ def update_event(event_id):
 
     return jsonify({"message": "Event updated successfully"})
 
+# Delete an event using  the event Id
+@app.route('/events/<event_id>', methods=['DELETE'])
+def delete_event(event_id):
+    try:
+        service.delete_event_by_id(event_id)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except EventNotFoundError as e:
+        return jsonify({"error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"error": "Internal Server Error"}), 500
+
+    return jsonify({"message": "Event deleted successfully"})
+
 if __name__ == '__main__':
     # Create  events table in database
     service.create_tables()
