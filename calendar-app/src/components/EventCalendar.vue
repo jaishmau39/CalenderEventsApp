@@ -160,7 +160,7 @@ export default {
             <input type="time" class="form-control" id="time" v-model="newEvent.time" >
           </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-formal">Submit</button>
         </form>
       </div>
 
@@ -256,9 +256,12 @@ body {
   
 }
 
-.btn-primary {
-  
-  background-color: #007bff;
-  border-color: #007bff;
+.btn-formal {
+  background-color: #f0f0f0; /* Light gray background color */
+  border-color: #ccc; /* Gray border color */
+  color: #333; /* Dark text color */
+ 
+  border-radius: 5px; /* Add border-radius for rounded corners */
+  cursor: pointer; /* Show pointer cursor on hover */
 }
 </style>
