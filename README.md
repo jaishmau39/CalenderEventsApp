@@ -5,7 +5,7 @@ This is an calendar application built using Python (Flask) for the backend and V
 
 ## Features
 - Create new events with a title, date, and time.
-- View events on the calendar with different views (month, wee, day).
+- View events on the calendar with different views (month, week, day).
 - Drag and drop events to reschedule them.
 - Delete events by clicking on them.
 ## Dependencies
