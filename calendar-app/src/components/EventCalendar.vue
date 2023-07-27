@@ -146,17 +146,17 @@ export default {
         <h3>Create Event</h3>
         <form @submit.prevent="createEvent">
           <div class="form-group">
-            <label for="title">Title:</label>
+            <label for="title">Title: </label>
             <input type="text" class="form-control" id="title" v-model="newEvent.title" required>
           </div>
 
           <div class="form-group">
-            <label for="date">Date:</label>
+            <label for="date">Date: </label>
             <input type="date" class="form-control" id="date" v-model="newEvent.date" required>
           </div>
 
           <div class="form-group">
-            <label for="time">Time:</label>
+            <label for="time">Time: </label>
             <input type="time" class="form-control" id="time" v-model="newEvent.time" >
           </div>
 
