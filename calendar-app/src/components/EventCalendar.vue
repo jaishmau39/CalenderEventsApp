@@ -163,6 +163,16 @@ export default {
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
+
+
+      <div class="instructions">
+        <h3>Instructions</h3>
+        <ul>
+          <li>Drag and drop event to rechedule.</li>
+          <li>Click on an event to delete it.</li>
+        </ul>
+      </div>
+
     </div>
     <div class="main-content">
       <!-- FullCalendar component -->
@@ -221,9 +231,34 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.instructions {
+  margin-top: 30px; /* Add space between the form and the instructions */
+}
+
+.instructions h3 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.instructions ul {
+  margin: 0;
+  list-style: disc;
+
+  display: block;
+  text-align: left;
+}
+
+.instructions li {
+  
+  margin: 1.5em 0;
+  padding-left: 0pt;
+  
+}
+
+.btn-primary {
+  
+  background-color: #007bff;
+  border-color: #007bff;
+}
 </style>
-
-
-
-
-
