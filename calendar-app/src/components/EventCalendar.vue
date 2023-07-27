@@ -17,8 +17,12 @@ export default {
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
+        eventDrop: this.onEventDrop,
+        allDaySlot: false,
         initialView: 'dayGridMonth',
         selectable: true,
+        editable: true,
+        dragRevertDuration:'00:00:08',
         events: []
       },
       newEvent: {
@@ -38,7 +42,7 @@ export default {
         const data = await response.json();
 
         if (Array.isArray(data)) {
-          const events = data.map(item => ({ title: item.title,  start: item.date + 'T' + item.time }));
+          const events = data.map(item => ({  id: item.id, title: item.title,  start: item.date + 'T' + item.time }));
           this.calendarOptions.events = events;
         }
       } catch (error) {
@@ -66,6 +70,35 @@ export default {
         console.error('Error creating event:', error);
       }
     },
+    
+    async onEventDrop(info) {
+    try {
+      const eventId = info.event.id;
+      console.log('Event ID:', eventId);
+      const eventToUpdate = {
+        title: info.event.title,
+        date: info.event.start.toISOString().substr(0, 10), // Extract YYYY-MM-DD from ISO string
+        time: info.event.start.toISOString().substr(11, 5), // Extract HH:mm from ISO string
+      };
+
+      const response = await fetch(`http://localhost:5000/events/${eventId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventToUpdate)
+      });
+
+      if (response.ok) {
+        // Event updated successfully, update the calendar
+        await this.fetchEvents();
+      } else {
+        console.error('Failed to update event.');
+      }
+    } catch (error) {
+      console.error('Error updating event:', error);
+    }
+  },
     resetForm() {
       this.newEvent.title = '';
       this.newEvent.date = '';
