@@ -93,11 +93,11 @@ async onEventDrop(info) {
     const eventId = info.event.id;
     console.log('Event ID:', eventId);
 
-    // Adjust the date to the local timezone
-    const localTimeZone = 'America/New_York'; // Replace 'America/New_York' with your actual local timezone (EST in your case)
+    // Set date to local timezone
+    const localTimeZone = 'America/New_York';
     const zonedDate = utcToZonedTime(info.event.start, localTimeZone);
 
-    // Format the date and time to ISO string with the adjusted timezone
+    // Format date and time to ISO string with adjusted timezone
     const formattedDate = format(zonedDate, 'yyyy-MM-dd', { timeZone: localTimeZone });
     const formattedTime = format(zonedDate, 'HH:mm:ss', { timeZone: localTimeZone });
 
