@@ -18,7 +18,7 @@ class CalendarModel:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title TEXT NOT NULL,
                 date TEXT NOT NULL,
-                time TEXT NOT NULL
+                time TEXT NULL
             )
         ''')
 

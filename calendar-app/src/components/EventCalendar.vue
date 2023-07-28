@@ -3,6 +3,8 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import { format, utcToZonedTime } from 'date-fns-tz';
+
 
 export default {
   components: {
@@ -18,11 +20,10 @@ export default {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         eventDrop: this.onEventDrop,
-        allDaySlot: false,
+        allDaySlot: true,
         initialView: 'dayGridMonth',
         selectable: true,
         editable: true,
-        dragRevertDuration:'00:00:08',
         events: []
       },
       newEvent: {
@@ -43,8 +44,12 @@ export default {
         const data = await response.json();
 
         if (Array.isArray(data)) {
-          const events = data.map(item => ({  id: item.id, title: item.title,  start: item.date + 'T' + item.time }));
-          this.calendarOptions.events = events;
+          const events = data.map(item => {
+          // If the event has no time, make it an all-day event
+          const start = item.time ? item.date + 'T' + item.time : item.date;
+          return { id: item.id, title: item.title, start: start };
+        });
+        this.calendarOptions.events = events;
         }
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -52,6 +57,13 @@ export default {
     },
     async createEvent() {
       try {
+
+
+        // Check if time is provided, otherwise set it to an empty string
+        if (!this.newEvent.time) {
+          this.newEvent.time = '';
+        }
+
         const response = await fetch('http://localhost:5000/events', {
           method: 'POST',
           headers: {
@@ -75,36 +87,46 @@ export default {
       }
     },
     
-    async onEventDrop(info) {
-    try {
-      const eventId = info.event.id;
-      console.log('Event ID:', eventId);
-      const eventToUpdate = {
-        title: info.event.title,
-        // Extract YYYY-MM-DD from ISO string
-        date: info.event.start.toISOString().substr(0, 10), 
-        // Extract HH:mm from ISO string
-        time: info.event.start.toISOString().substr(11, 5), 
-      };
 
-      const response = await fetch(`http://localhost:5000/events/${eventId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(eventToUpdate)
-      });
+async onEventDrop(info) {
+  try {
+    const eventId = info.event.id;
+    console.log('Event ID:', eventId);
 
-      if (response.ok) {
-        // Event updated successfully, update the calendar
-        await this.fetchEvents();
-      } else {
-        console.error('Failed to update event.');
-      }
-    } catch (error) {
-      console.error('Error updating event:', error);
+    // Adjust the date to the local timezone
+    const localTimeZone = 'America/New_York'; // Replace 'America/New_York' with your actual local timezone (EST in your case)
+    const zonedDate = utcToZonedTime(info.event.start, localTimeZone);
+
+    // Format the date and time to ISO string with the adjusted timezone
+    const formattedDate = format(zonedDate, 'yyyy-MM-dd', { timeZone: localTimeZone });
+    const formattedTime = format(zonedDate, 'HH:mm:ss', { timeZone: localTimeZone });
+
+    const eventToUpdate = {
+      title: info.event.title,
+      date: formattedDate,
+      time: formattedTime, // Include the formatted time in the eventToUpdate object
+    };
+
+    const response = await fetch(`http://localhost:5000/events/${eventId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(eventToUpdate)
+    });
+
+    if (response.ok) {
+      // Event updated successfully, update the calendar
+      await this.fetchEvents();
+    } else {
+      console.error('Failed to update event.');
     }
-  },
+  } catch (error) {
+    console.error('Error updating event:', error);
+  }
+},
+
+
   
     onEventClick(eventClickInfo) {
     const eventId = eventClickInfo.event.id;

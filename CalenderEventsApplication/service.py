@@ -13,9 +13,9 @@ class CalendarService:
 
     def create_event(self, event_dto: EventDTO):
         
-        if not event_dto.title or not event_dto.date or not event_dto.time:
+        if not event_dto.title or not event_dto.date:
             # Raise error if title, date or time is missing 
-            raise ValueError("Missing required fields (title, date, or time)")
+            raise ValueError("Missing required fields (title or date)")
         return self.model.create_event(event_dto)
 
 
