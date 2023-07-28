@@ -1,7 +1,7 @@
 
 #   Calender Events App
 
-This is an calendar application built using Python (Flask) for the backend and Vue.js for the frontend. The application allows users to create, view, update and delete events on the calendar.
+This is a calendar application built using Python (Flask) for the backend and Vue.js for the frontend. The application allows users to create, view, update and delete events on the calendar.
 
 ## Features
 - Create new events with a title, date, and time.
