@@ -63,9 +63,10 @@ export default {
         if (response.ok) {
           // Event created successfully, update the calendar
           await this.fetchEvents();
+          
           this.resetForm();
            // Display event creation success message
-        window.alert('Event successfully created!');
+        // window.alert('Event successfully created!');
         } else {
           console.error('Failed to create event.');
         }
